@@ -53,11 +53,14 @@ app.get('/search', (req, res) => {
     const moviesByDate = movies.sort((a, b) => a.year - b.year);
     res.json({status: 200, data: moviesByDate});
   });
+  // the sort method and providing a comparison function that compares the year property of movie a to the year property of movie b. If the year of movie a is less than the year of movie b, the comparison function returns a negative value, causing movie a to be placed before movie b in the sorted array. 
   
   app.get('/movies/read/by-rating', (req, res) => {
     const moviesByRating = movies.sort((a, b) => b.rating - a.rating);
     res.json({status: 200, data: moviesByRating});
   });
+
+  //the rating property of movie a to the rating property of movie b. If the rating of movie a is less than the rating of movie b, the comparison function returns a negative value, causing movie a to be placed after movie b in the sorted array. If the rating of movie a is greater than the rating of movie b, the comparison function returns a positive value, causing movie a to be placed before movie b in the sorted array. 
   
   app.get('/movies/read/by-title', (req, res) => {
     const moviesByTitle = movies.sort((a, b) => {
@@ -71,6 +74,21 @@ app.get('/search', (req, res) => {
     });
     res.json({status: 200, data: moviesByTitle});
   });
+
+  //the sort method uses an if-else statement to compare the title properties of movie a and movie b. 
+//   If the title of movie a is lexicographically less than the title of movie b (i.e., it comes before it in the alphabet), the comparison function returns -1, causing movie a to be placed before movie b in the sorted array. If the title of movie a is lexicographically greater than the title of movie b, the comparison function returns 1, causing movie a to be placed after movie b in the sorted array.
+//    If the title of movie a and movie b are equal, the comparison function returns 0, causing the order of movie a and movie b to remain unchanged in the sorted array.
+
+app.get('/movies/read/id/:id', (req, res) => {
+    const id = req.params.id;
+    const movie = movies.find(movie => movie.id == id);
+    if (movie) {
+      res.json({status: 200, data: movie});
+    } else {
+      res.status(404).json({status: 404, error: true, message: `the movie ${id} does not exist`});
+    }
+  });
+
 
 app.listen(PORT, () => {
   console.log(`Server listening on port ${PORT}`);
