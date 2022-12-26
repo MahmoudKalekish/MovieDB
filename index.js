@@ -48,6 +48,30 @@ app.get('/search', (req, res) => {
   });
 
 
+
+  app.get('/movies/read/by-date', (req, res) => {
+    const moviesByDate = movies.sort((a, b) => a.year - b.year);
+    res.json({status: 200, data: moviesByDate});
+  });
+  
+  app.get('/movies/read/by-rating', (req, res) => {
+    const moviesByRating = movies.sort((a, b) => b.rating - a.rating);
+    res.json({status: 200, data: moviesByRating});
+  });
+  
+  app.get('/movies/read/by-title', (req, res) => {
+    const moviesByTitle = movies.sort((a, b) => {
+      if (a.title < b.title) {
+        return -1;
+      }
+      if (a.title > b.title) {
+        return 1;
+      }
+      return 0;
+    });
+    res.json({status: 200, data: moviesByTitle});
+  });
+
 app.listen(PORT, () => {
   console.log(`Server listening on port ${PORT}`);
 });
