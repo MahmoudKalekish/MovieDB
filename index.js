@@ -4,10 +4,10 @@ const app = express();
 const PORT = 3000;
 
 const movies = [
-    { title: 'Jaws', year: 1975, rating: 8 },
-    { title: 'Avatar', year: 2009, rating: 7.8 },
-    { title: 'Brazil', year: 1985, rating: 8 },
-    { title: 'الإرهاب والكباب', year: 1992, rating: 6.2 }
+    {id : 1, title: 'Jaws', year: 1975, rating: 8 },
+    {id : 2, title: 'Avatar', year: 2009, rating: 7.8 },
+    {id : 3, title: 'Brazil', year: 1985, rating: 8 },
+    {id : 4, title: 'الإرهاب والكباب', year: 1992, rating: 6.2 }
 ]
 
 app.get('/hello/:id', (req, res) => {
@@ -107,7 +107,17 @@ app.get('/movies/read/id/:id', (req, res) => {
   });
   
 
-    
+  app.get('/movies/delete/:id', (req, res) => {
+    const id = req.params.id;
+    const movieIndex = movies.findIndex(movie => movie.id == id);
+    if (movieIndex !== -1) {
+      movies.splice(movieIndex, 1);
+      res.json({status: 200, data: movies});
+    } else {
+      res.status(404).json({status: 404, error: true, message: `the movie ${id} does not exist`});
+    }
+  });
+
 
 app.listen(PORT, () => {
   console.log(`Server listening on port ${PORT}`);
