@@ -31,21 +31,11 @@ app.get('/search', (req, res) => {
   });
 
 
-  app.post('/movies/create', (req, res) => {
-    // TODO: Add code to handle movie creation
-  });
   
   app.get('/movies/read', (req, res) => {
     res.json({status: 200, data: movies});
   });
   
-  app.put('/movies/update', (req, res) => {
-    // TODO: Add code to handle movie update
-  });
-  
-  app.delete('/movies/delete', (req, res) => {
-    // TODO: Add code to handle movie delete
-  });
 
 
 
@@ -118,6 +108,21 @@ app.get('/movies/read/id/:id', (req, res) => {
     }
   });
 
+
+  app.get('/movies/update/:id', (req, res) => {
+    const id = req.params.id;
+    const movie = movies.find(movie => movie.id == id);
+    if (movie) {
+      const { title, rating } = req.query;
+      // Query parameters are a way to pass additional information in the form of key-value pairs in the URL of an HTTP request. They are appended to the URL after a question mark (?) and are separated by an ampersand (&).
+      if (title) movie.title = title;
+      if (rating) movie.rating = rating;
+      res.json({status: 200, data: movies});
+    } else {
+      res.status(404).json({status: 404, error: true, message: `the movie ${id} does not exist`});
+    }
+  });
+  
 
 app.listen(PORT, () => {
   console.log(`Server listening on port ${PORT}`);
