@@ -1,4 +1,6 @@
 const express = require('express');
+const MongoClient = require('mongodb').MongoClient;
+const bodyParser = require('body-parser');
 const app = express();
 
 const PORT = 3000;
@@ -9,6 +11,15 @@ const movies = [
     {id : 3, title: 'Brazil', year: 1985, rating: 8 },
     {id : 4, title: 'الإرهاب والكباب', year: 1992, rating: 6.2 }
 ]
+
+app.get('/test', (req, res) => {
+  res.json({status: 200, message: 'ok'});
+});
+
+app.get('/time', (req, res) => {
+  const currentTime = new Date().toLocaleTimeString();
+  res.json({status: 200, message: currentTime});
+});
 
 app.get('/hello/:id', (req, res) => {
   const id = req.params.id;
@@ -82,11 +93,11 @@ app.get('/movies/read/id/:id', (req, res) => {
  
   
   
-  app.get('/movies/add', (req, res) => {
+  app.post('/movies/add', (req, res) => {
     const title = req.query.title;
     const year = req.query.year;
     const rating = req.query.rating || 4; // default rating if not provided
-  
+  //http://localhost:3000/movies/add?title=batman&year=2022&rating=8
     if (!title || !year || year.length !== 4 ||  isNaN(year)) {
       res.status(403).json({status: 403, error: true, message: "you cannot create a movie without providing a title and a year"});
       return;
@@ -98,7 +109,7 @@ app.get('/movies/read/id/:id', (req, res) => {
   });
   
 
-  app.get('/movies/delete/:id', (req, res) => {
+  app.delete('/movies/delete/:id', (req, res) => {
     const id = req.params.id;
     const movieIndex = movies.findIndex(movie => movie.id == id);
     if (movieIndex !== -1) {
@@ -110,7 +121,7 @@ app.get('/movies/read/id/:id', (req, res) => {
   });
 
 
-  app.get('/movies/update/:id', (req, res) => {
+  app.put('/movies/update/:id', (req, res) => {
     const id = req.params.id;
     const movie = movies.find(movie => movie.id == id);
     if (movie) {
@@ -128,3 +139,4 @@ app.get('/movies/read/id/:id', (req, res) => {
 app.listen(PORT, () => {
   console.log(`Server listening on port ${PORT}`);
 });
+
